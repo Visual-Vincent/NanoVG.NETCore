@@ -125,7 +125,7 @@
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>"$(SolutionDir)Generator\bin\Debug\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+      <Command>"$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -147,7 +147,7 @@
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>"$(SolutionDir)Generator\bin\Release\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+      <Command>"$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -165,7 +165,7 @@
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>"$(SolutionDir)Generator\bin\Debug\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+      <Command>"$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -187,7 +187,7 @@
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
-      <Command>"$(SolutionDir)Generator\bin\Release\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+      <Command>"$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
