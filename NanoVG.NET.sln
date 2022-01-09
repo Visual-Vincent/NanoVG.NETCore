@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NanoVG.NET", "NanoVG.NET\Na
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NanoVG.Native", "NanoVG.Native\NanoVG.Native.vcxproj", "{0D1CF081-185F-424F-9D82-6D459EE465F8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB} = {363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,10 +43,23 @@ Global
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Debug|x86.ActiveCfg = Debug|Win32
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Debug|x86.Build.0 = Debug|Win32
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|Any CPU.Build.0 = Release|Win32
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|x64.ActiveCfg = Release|x64
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|x64.Build.0 = Release|x64
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|x86.ActiveCfg = Release|Win32
 		{0D1CF081-185F-424F-9D82-6D459EE465F8}.Release|x86.Build.0 = Release|Win32
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|x64.Build.0 = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Debug|x86.Build.0 = Debug|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|x64.ActiveCfg = Release|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|x64.Build.0 = Release|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|x86.ActiveCfg = Release|Any CPU
+		{363756D7-CA1B-4870-AD45-A2AAD3A6A9FB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

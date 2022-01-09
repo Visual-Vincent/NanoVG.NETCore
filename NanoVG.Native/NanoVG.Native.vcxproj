@@ -31,6 +31,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -38,12 +39,14 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -51,6 +54,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -120,6 +124,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Generator\bin\Debug\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -139,6 +146,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Generator\bin\Release\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -154,6 +164,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Generator\bin\Debug\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -173,6 +186,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>$(ProjectDir)exports.def</ModuleDefinitionFile>
     </Link>
+    <PreBuildEvent>
+      <Command>"$(SolutionDir)Generator\bin\Release\netcoreapp3.1\Generator.exe" exports -n NanoVG -f "$(SolutionDir)nanovg\src\nanovg.h" -s nvgCreateGL3 -o "$(ProjectDir)exports.def"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\nanovg\src\fontstash.h" />
