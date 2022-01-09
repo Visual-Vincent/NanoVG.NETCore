@@ -116,7 +116,7 @@ namespace Generator
         Standard,
 
         /// <summary>
-        /// An address-of pointer (** or &)
+        /// An address-of pointer (** or &amp;)
         /// </summary>
         AddressOf
     }
