@@ -67,12 +67,12 @@ BEGIN
     BEGIN
         BLOCK "000904b0"
         BEGIN
-            VALUE "FileDescription", "NanoVG.Native"
+            VALUE "FileDescription", "NanoVG"
             VALUE "FileVersion", "1.0.0.0"
-            VALUE "InternalName", "NanoVG.Native"
-            VALUE "LegalCopyright", "Copyright (C) Visual Vincent 2022"
-            VALUE "OriginalFilename", "NanoVG.Native"
-            VALUE "ProductName", "NanoVG.Native"
+            VALUE "InternalName", "NanoVG"
+            VALUE "LegalCopyright", "Copyright © Mikko Mononen 2013, Visual Vincent 2022"
+            VALUE "OriginalFilename", "NanoVG"
+            VALUE "ProductName", "NanoVG"
             VALUE "ProductVersion", "1.0.0.0"
         END
     END
