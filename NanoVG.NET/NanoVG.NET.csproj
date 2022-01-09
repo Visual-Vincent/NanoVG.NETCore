@@ -6,4 +6,16 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="&quot;$(SolutionDir)Generator\bin\Release\netcoreapp3.1\Generator.exe&quot; pinvoke -l NanoVG -n NanoVG -c NVG -f &quot;$(SolutionDir)nanovg\src\nanovg.h&quot; -o &quot;$(ProjectDir)NVG.cs&quot; --partial-class" />
+  </Target>
+
 </Project>

@@ -16,7 +16,7 @@ namespace Generator
         /// <summary>
         /// Gets the return type of the function.
         /// </summary>
-        public string ReturnType { get; }
+        public TypeDefinition ReturnType { get; }
 
         /// <summary>
         /// Gets the comment describing the function.
@@ -34,7 +34,7 @@ namespace Generator
         /// <param name="name">The name of the function.</param>
         /// <param name="returnType">The return type of the function.</param>
         /// <param name="comment">The comment describing the function.</param>
-        public FunctionDefinition(string name, string returnType, string comment = null)
+        public FunctionDefinition(string name, TypeDefinition returnType, string comment = null)
         {
             Name = name;
             ReturnType = returnType;
