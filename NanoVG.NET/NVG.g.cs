@@ -8,6 +8,158 @@ using System.Runtime.InteropServices;
 
 namespace NanoVG
 {
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGpaint
+    {
+        public fixed float xform[6];
+        public fixed float extent[2];
+        public float radius;
+        public float feather;
+        public NVGcolor innerColor;
+        public NVGcolor outerColor;
+        public int image;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct NVGcompositeOperationState
+    {
+        public int srcRGB;
+        public int dstRGB;
+        public int srcAlpha;
+        public int dstAlpha;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGglyphPosition
+    {
+        public string str;
+        public float x;
+        public float minx, maxx;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGtextRow
+    {
+        public string start;
+        public string end;
+        public string next;
+        public float width;
+        public float minx, maxx;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGscissor
+    {
+        public fixed float xform[6];
+        public fixed float extent[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct NVGvertex
+    {
+        public float x,y,u,v;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGpath
+    {
+        public int first;
+        public int count;
+        public byte closed;
+        public int nbevel;
+        public NVGvertex* fill;
+        public int nfill;
+        public NVGvertex* stroke;
+        public int nstroke;
+        public int winding;
+        public int convex;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public unsafe struct NVGparams
+    {
+        public void* userPtr;
+        public int edgeAntiAlias;
+    }
+
+    public enum NVGwinding
+    {
+        NVG_CCW = 1,
+        NVG_CW  = 2,
+    }
+
+    public enum NVGsolidity
+    {
+        NVG_SOLID = 1,
+        NVG_HOLE  = 2,
+    }
+
+    public enum NVGlineCap
+    {
+        NVG_BUTT,
+        NVG_ROUND,
+        NVG_SQUARE,
+        NVG_BEVEL,
+        NVG_MITER,
+    }
+
+    public enum NVGalign
+    {
+        NVG_ALIGN_LEFT     = 1<<0,
+        NVG_ALIGN_CENTER   = 1<<1,
+        NVG_ALIGN_RIGHT    = 1<<2,
+        NVG_ALIGN_TOP      = 1<<3,
+        NVG_ALIGN_MIDDLE   = 1<<4,
+        NVG_ALIGN_BOTTOM   = 1<<5,
+        NVG_ALIGN_BASELINE = 1<<6,
+    }
+
+    public enum NVGblendFactor
+    {
+        NVG_ZERO                = 1<<0,
+        NVG_ONE                 = 1<<1,
+        NVG_SRC_COLOR           = 1<<2,
+        NVG_ONE_MINUS_SRC_COLOR = 1<<3,
+        NVG_DST_COLOR           = 1<<4,
+        NVG_ONE_MINUS_DST_COLOR = 1<<5,
+        NVG_SRC_ALPHA           = 1<<6,
+        NVG_ONE_MINUS_SRC_ALPHA = 1<<7,
+        NVG_DST_ALPHA           = 1<<8,
+        NVG_ONE_MINUS_DST_ALPHA = 1<<9,
+        NVG_SRC_ALPHA_SATURATE  = 1<<10,
+    }
+
+    public enum NVGcompositeOperation
+    {
+        NVG_SOURCE_OVER,
+        NVG_SOURCE_IN,
+        NVG_SOURCE_OUT,
+        NVG_ATOP,
+        NVG_DESTINATION_OVER,
+        NVG_DESTINATION_IN,
+        NVG_DESTINATION_OUT,
+        NVG_DESTINATION_ATOP,
+        NVG_LIGHTER,
+        NVG_COPY,
+        NVG_XOR,
+    }
+
+    public enum NVGimageFlags
+    {
+        NVG_IMAGE_GENERATE_MIPMAPS = 1<<0,
+        NVG_IMAGE_REPEATX          = 1<<1,
+        NVG_IMAGE_REPEATY          = 1<<2,
+        NVG_IMAGE_FLIPY            = 1<<3,
+        NVG_IMAGE_PREMULTIPLIED    = 1<<4,
+        NVG_IMAGE_NEAREST          = 1<<5,
+    }
+
+    public enum NVGtexture
+    {
+        NVG_TEXTURE_ALPHA = 0x01,
+        NVG_TEXTURE_RGBA  = 0x02,
+    }
+
     public static unsafe partial class NVG
     {
         public const string LibraryName = "NanoVG";
@@ -685,157 +837,4 @@ namespace NanoVG
         public static extern void nvgDebugDumpPathCache(NVGcontext* ctx);
 
     }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGpaint
-    {
-        public fixed float xform[6];
-        public fixed float extent[2];
-        public float radius;
-        public float feather;
-        public NVGcolor innerColor;
-        public NVGcolor outerColor;
-        public int image;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct NVGcompositeOperationState
-    {
-        public int srcRGB;
-        public int dstRGB;
-        public int srcAlpha;
-        public int dstAlpha;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGglyphPosition
-    {
-        public string str;
-        public float x;
-        public float minx, maxx;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGtextRow
-    {
-        public string start;
-        public string end;
-        public string next;
-        public float width;
-        public float minx, maxx;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGscissor
-    {
-        public fixed float xform[6];
-        public fixed float extent[2];
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct NVGvertex
-    {
-        public float x,y,u,v;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGpath
-    {
-        public int first;
-        public int count;
-        public byte closed;
-        public int nbevel;
-        public NVGvertex* fill;
-        public int nfill;
-        public NVGvertex* stroke;
-        public int nstroke;
-        public int winding;
-        public int convex;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public unsafe struct NVGparams
-    {
-        public void* userPtr;
-        public int edgeAntiAlias;
-    }
-
-    public enum NVGwinding
-    {
-        NVG_CCW     = 1,
-        NVG_CW      = 2,
-    }
-
-    public enum NVGsolidity
-    {
-        NVG_SOLID     = 1,
-        NVG_HOLE      = 2,
-    }
-
-    public enum NVGlineCap
-    {
-        NVG_BUTT,
-        NVG_ROUND,
-        NVG_SQUARE,
-        NVG_BEVEL,
-        NVG_MITER,
-    }
-
-    public enum NVGalign
-    {
-        NVG_ALIGN_LEFT         = 1<<0,
-        NVG_ALIGN_CENTER       = 1<<1,
-        NVG_ALIGN_RIGHT        = 1<<2,
-        NVG_ALIGN_TOP          = 1<<3,
-        NVG_ALIGN_MIDDLE       = 1<<4,
-        NVG_ALIGN_BOTTOM       = 1<<5,
-        NVG_ALIGN_BASELINE     = 1<<6,
-    }
-
-    public enum NVGblendFactor
-    {
-        NVG_ZERO                    = 1<<0,
-        NVG_ONE                     = 1<<1,
-        NVG_SRC_COLOR               = 1<<2,
-        NVG_ONE_MINUS_SRC_COLOR     = 1<<3,
-        NVG_DST_COLOR               = 1<<4,
-        NVG_ONE_MINUS_DST_COLOR     = 1<<5,
-        NVG_SRC_ALPHA               = 1<<6,
-        NVG_ONE_MINUS_SRC_ALPHA     = 1<<7,
-        NVG_DST_ALPHA               = 1<<8,
-        NVG_ONE_MINUS_DST_ALPHA     = 1<<9,
-        NVG_SRC_ALPHA_SATURATE      = 1<<10,
-    }
-
-    public enum NVGcompositeOperation
-    {
-        NVG_SOURCE_OVER,
-        NVG_SOURCE_IN,
-        NVG_SOURCE_OUT,
-        NVG_ATOP,
-        NVG_DESTINATION_OVER,
-        NVG_DESTINATION_IN,
-        NVG_DESTINATION_OUT,
-        NVG_DESTINATION_ATOP,
-        NVG_LIGHTER,
-        NVG_COPY,
-        NVG_XOR,
-    }
-
-    public enum NVGimageFlags
-    {
-        NVG_IMAGE_GENERATE_MIPMAPS     = 1<<0,
-        NVG_IMAGE_REPEATX              = 1<<1,
-        NVG_IMAGE_REPEATY              = 1<<2,
-        NVG_IMAGE_FLIPY                = 1<<3,
-        NVG_IMAGE_PREMULTIPLIED        = 1<<4,
-        NVG_IMAGE_NEAREST              = 1<<5,
-    }
-
-    public enum NVGtexture
-    {
-        NVG_TEXTURE_ALPHA     = 0x01,
-        NVG_TEXTURE_RGBA      = 0x02,
-    }
-
 }

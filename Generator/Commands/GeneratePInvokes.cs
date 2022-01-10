@@ -87,48 +87,6 @@ namespace Generator.Commands
                 builder.AppendLine();
                 builder.AppendLine($"namespace {Namespace}");
                 builder.AppendLine("{");
-                builder.AppendLine($"    public static unsafe{(PartialClass ? " partial" : "")} class {ClassName}");
-                builder.AppendLine(@"    {");
-                builder.AppendLine($"        public const string LibraryName = \"{LibraryName}\";");
-                builder.AppendLine();
-
-                // Functions
-                // -----------------------------------------------------------------------------------------------------------------
-
-                foreach(var function in functionList)
-                {
-                    if(!string.IsNullOrWhiteSpace(function.Comment))
-                    {
-                        string comment = SecurityElement.Escape(function.Comment.Trim());
-                        comment = CommentLinebreakRegex.Replace(comment, $" <br/>{Environment.NewLine}        /// ");
-
-                        builder.AppendLine($"        /// <summary>");
-                        builder.AppendLine($"        /// {comment}");
-                        builder.AppendLine($"        /// </summary>");
-                    }
-                    builder.AppendLine($"        [DllImport(LibraryName)]");
-                    builder.Append($"        public static extern {ConvertType(function.ReturnType)} {ConvertName(function.Name)}");
-                    builder.Append("(");
-
-                    int args = function.Arguments.Count;
-                    for(int i = 0; i < args; i++)
-                    {
-                        var argument = function.Arguments[i];
-                        string name = ConvertName(argument.Name);
-                        string type = ConvertType(argument.Type);
-
-                        builder.Append($"{type} {name}");
-
-                        if(i < args - 1)
-                            builder.Append(", ");
-                    }
-
-                    builder.AppendLine(");");
-                    builder.AppendLine();
-                }
-
-                builder.AppendLine("    }");
-                builder.AppendLine();
 
                 // Structs
                 // -----------------------------------------------------------------------------------------------------------------
@@ -167,7 +125,7 @@ namespace Generator.Commands
                     builder.AppendLine($"    public enum {ConvertName(@enum.Name)}");
                     builder.AppendLine(@"    {");
 
-                    int longestValueName = @enum.Values.Max(kvp => kvp.Key.Length) + 12 + 1; // 12 = indentation
+                    int longestValueName = @enum.Values.Max(kvp => kvp.Key.Length) + 8 + 1; // 12 = indentation
 
                     foreach(var kvp in @enum.Values)
                     {
@@ -183,6 +141,47 @@ namespace Generator.Commands
                     builder.AppendLine();
                 }
 
+                // Functions
+                // -----------------------------------------------------------------------------------------------------------------
+
+                builder.AppendLine($"    public static unsafe{(PartialClass ? " partial" : "")} class {ClassName}");
+                builder.AppendLine(@"    {");
+                builder.AppendLine($"        public const string LibraryName = \"{LibraryName}\";");
+                builder.AppendLine();
+
+                foreach(var function in functionList)
+                {
+                    if(!string.IsNullOrWhiteSpace(function.Comment))
+                    {
+                        string comment = SecurityElement.Escape(function.Comment.Trim());
+                        comment = CommentLinebreakRegex.Replace(comment, $" <br/>{Environment.NewLine}        /// ");
+
+                        builder.AppendLine($"        /// <summary>");
+                        builder.AppendLine($"        /// {comment}");
+                        builder.AppendLine($"        /// </summary>");
+                    }
+                    builder.AppendLine($"        [DllImport(LibraryName)]");
+                    builder.Append($"        public static extern {ConvertType(function.ReturnType)} {ConvertName(function.Name)}");
+                    builder.Append("(");
+
+                    int args = function.Arguments.Count;
+                    for(int i = 0; i < args; i++)
+                    {
+                        var argument = function.Arguments[i];
+                        string name = ConvertName(argument.Name);
+                        string type = ConvertType(argument.Type);
+
+                        builder.Append($"{type} {name}");
+
+                        if(i < args - 1)
+                            builder.Append(", ");
+                    }
+
+                    builder.AppendLine(");");
+                    builder.AppendLine();
+                }
+
+                builder.AppendLine("    }");
                 builder.AppendLine("}");
 
                 File.WriteAllText(outputFile, builder.ToString());
