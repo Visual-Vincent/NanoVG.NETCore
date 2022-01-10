@@ -15,6 +15,17 @@ namespace Generator.Commands
         private static readonly Regex IdentifierRegex = new Regex(@"\A[a-z_][a-z0-9_]*\z", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         private static readonly Regex CommentLinebreakRegex = new Regex(@"(?:\r?\n|\r)[ \t]*", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
+        private static readonly HashSet<string> ReservedKeywords = new HashSet<string>() {
+            "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class",
+            "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event",
+            "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if",
+            "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new",
+            "null", "object", "operator", "out", "override", "params", "private", "protected", "public",
+            "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string",
+            "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe",
+            "ushort", "using", "virtual", "void", "volatile", "while"
+        };
+
         private static readonly Dictionary<TypeFlags, string> TypePrefixes = new Dictionary<TypeFlags, string>() {
             { TypeFlags.Const, "" },
             { TypeFlags.Unsigned, "u" }
@@ -169,7 +180,7 @@ namespace Generator.Commands
                     {
                         var argument = function.Arguments[i];
                         string name = ConvertName(argument.Name);
-                        string type = ConvertType(argument.Type);
+                        string type = ConvertArgType(function, argument);
 
                         builder.Append($"{type} {name}");
 
@@ -224,18 +235,27 @@ namespace Generator.Commands
                     return "StringBuilder";
             }
 
+            if(type.Name.Equals("NVGcontext", StringComparison.OrdinalIgnoreCase))
+                return type.Name; // Get rid of pointers
+
             return type.ToString(TypePrefixes, arraySuffix);
         }
 
-        private static readonly HashSet<string> ReservedKeywords = new HashSet<string>() {
-            "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", 
-            "const", "continue", "decimal", "default", "delegate", "do", "double", "else", "enum", "event", 
-            "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", 
-            "implicit", "in", "int", "interface", "internal", "is", "lock", "long", "namespace", "new", 
-            "null", "object", "operator", "out", "override", "params", "private", "protected", "public", 
-            "readonly", "ref", "return", "sbyte", "sealed", "short", "sizeof", "stackalloc", "static", "string", 
-            "struct", "switch", "this", "throw", "true", "try", "typeof", "uint", "ulong", "unchecked", "unsafe", 
-            "ushort", "using", "virtual", "void", "volatile", "while"
-        };
+        // Handles special cases
+        private static string ConvertArgType(FunctionDefinition function, ArgumentDefinition argument, bool arraySuffix = true)
+        {
+            TypeDefinition type = argument.Type;
+
+            if(type.Name.Equals("NVGcontext", StringComparison.OrdinalIgnoreCase))
+                return $"this {type.Name}";
+
+            if(function.Name == "nvgTextGlyphPositions" && argument.Name == "positions" && type.Pointer == PointerType.Standard)
+                return $"{type.Name}[]";
+
+            if(function.Name == "nvgTextBreakLines" && argument.Name == "rows" && type.Pointer == PointerType.Standard)
+                return $"{type.Name}[]";
+
+            return ConvertType(type, arraySuffix);
+        }
     }
 }

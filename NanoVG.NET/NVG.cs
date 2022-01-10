@@ -31,6 +31,13 @@ namespace NanoVG
         }
     }
 
+    [StructLayout(LayoutKind.Explicit, Pack = 1)]
+    public struct NVGcontext
+    {
+        [FieldOffset(0)]
+        public IntPtr Handle;
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct NVGcolor
     {
