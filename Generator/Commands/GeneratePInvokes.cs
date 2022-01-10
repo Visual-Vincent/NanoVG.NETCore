@@ -92,6 +92,9 @@ namespace Generator.Commands
                 builder.AppendLine($"        public const string LibraryName = \"{LibraryName}\";");
                 builder.AppendLine();
 
+                // Functions
+                // -----------------------------------------------------------------------------------------------------------------
+
                 foreach(var function in functionList)
                 {
                     if(!string.IsNullOrWhiteSpace(function.Comment))
@@ -124,6 +127,9 @@ namespace Generator.Commands
                     builder.AppendLine();
                 }
 
+                // Structs
+                // -----------------------------------------------------------------------------------------------------------------
+
                 foreach(var @struct in structList)
                 {
                     bool isUnsafe = @struct.Fields.Any(field => field.Type.IsArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds));
@@ -146,6 +152,9 @@ namespace Generator.Commands
                     builder.AppendLine(@"        }");
                     builder.AppendLine();
                 }
+
+                // Enums
+                // -----------------------------------------------------------------------------------------------------------------
 
                 foreach(var @enum in enumList)
                 {

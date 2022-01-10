@@ -180,8 +180,8 @@ namespace Generator
                 string body = match.Groups["body"].Value;
                 StructDefinition @struct = new StructDefinition(name);
 
-                // Parsing union structs is not supported.
-                if(body.Contains("union"))
+                // Parsing empty or union structs is not supported.
+                if(body.Length <= 0 || body.Contains("union"))
                     continue;
 
                 var fieldMatches = StructFieldRegex.Matches(body);
