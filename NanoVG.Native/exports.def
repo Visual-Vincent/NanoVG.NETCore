@@ -105,3 +105,6 @@ EXPORTS
 	nvgInternalParams
 	nvgDebugDumpPathCache
 	nvgCreateGL3
+	nvgDeleteGL3
+	nvglCreateImageFromHandleGL3
+	nvglImageHandleGL3

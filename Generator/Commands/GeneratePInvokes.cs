@@ -224,11 +224,15 @@ namespace Generator.Commands
             {
                 Console.WriteLine("Failed to generate P/Invoke definitions:");
                 Console.WriteLine($"  Could not find file: {ex.FileName}");
+
+                Environment.ExitCode = 1;
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Failed to generate P/Invoke definitions:");
                 Console.WriteLine($"  {ex}");
+
+                Environment.ExitCode = 1;
             }
         }
 
@@ -260,6 +264,14 @@ namespace Generator.Commands
 
             if(type.Name.Equals("NVGcontext", StringComparison.OrdinalIgnoreCase))
                 return type.Name; // Get rid of pointers
+
+            if(type.Name == "GLuint")
+            {
+                if(type.IsArray)
+                    type = new TypeDefinition("int", type.Flags | TypeFlags.Unsigned, type.ArrayBounds);
+                else
+                    type = new TypeDefinition("int", type.Flags | TypeFlags.Unsigned, type.Pointer);
+            }
 
             return type.ToString(TypePrefixes, arraySuffix);
         }

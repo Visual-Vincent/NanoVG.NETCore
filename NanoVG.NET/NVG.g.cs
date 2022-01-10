@@ -837,5 +837,17 @@ namespace NanoVG
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(DebugDumpPathCache))]
         public static extern void DebugDumpPathCache(this NVGcontext ctx);
 
+        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateGL3))]
+        public static extern NVGcontext CreateGL3(int flags);
+
+        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(DeleteGL3))]
+        public static extern void DeleteGL3(this NVGcontext ctx);
+
+        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(lCreateImageFromHandleGL3))]
+        public static extern int lCreateImageFromHandleGL3(this NVGcontext ctx, uint textureId, int w, int h, int flags);
+
+        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(lImageHandleGL3))]
+        public static extern uint lImageHandleGL3(this NVGcontext ctx, int image);
+
     }
 }

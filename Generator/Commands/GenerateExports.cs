@@ -73,11 +73,15 @@ namespace Generator.Commands
             {
                 Console.WriteLine("Failed to generate module exports file:");
                 Console.WriteLine($"  Could not find file: {ex.FileName}");
+
+                Environment.ExitCode = 1;
             }
             catch(Exception ex)
             {
                 Console.WriteLine("Failed to generate module exports file:");
                 Console.WriteLine($"  {ex}");
+
+                Environment.ExitCode = 1;
             }
         }
     }
