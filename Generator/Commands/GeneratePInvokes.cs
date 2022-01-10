@@ -51,6 +51,7 @@ namespace Generator.Commands
                 ClangParser parser = new ClangParser();
                 List<FunctionDefinition> functionList = new List<FunctionDefinition>();
                 List<EnumDefinition> enumList = new List<EnumDefinition>();
+                List<StructDefinition> structList = new List<StructDefinition>();
 
                 foreach(string file in Files)
                 {
@@ -58,6 +59,9 @@ namespace Generator.Commands
 
                     var functions = parser.ParseFunctions(contents);
                     functionList.AddRange(functions);
+
+                    var structs = parser.ParseStructs(contents);
+                    structList.AddRange(structs);
 
                     var enums = parser.ParseEnums(contents);
                     enumList.AddRange(enums);
@@ -120,19 +124,44 @@ namespace Generator.Commands
                     builder.AppendLine();
                 }
 
+                foreach(var @struct in structList)
+                {
+                    bool isUnsafe = @struct.Fields.Any(field => field.Type.IsArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds));
+
+                    builder.AppendLine($"        public{(isUnsafe ? " unsafe" : "")} struct {ConvertName(@struct.Name)}");
+                    builder.AppendLine(@"        {");
+
+                    foreach(var field in @struct.Fields)
+                    {
+                        bool isArray = field.Type.IsArray;
+                        bool isFixed = isArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds);
+
+                        string name = ConvertName(field.Name);
+                        string type = ConvertType(field.Type, false);
+                        string bounds = isArray ? $"[{field.Type.ArrayBounds}]" : "";
+
+                        builder.AppendLine($"            public{(isFixed ? " fixed" : "")} {type} {name}{bounds};");
+                    }
+
+                    builder.AppendLine(@"        }");
+                    builder.AppendLine();
+                }
+
                 foreach(var @enum in enumList)
                 {
-                    builder.AppendLine($"        enum {@enum.Name}");
+                    builder.AppendLine($"        public enum {ConvertName(@enum.Name)}");
                     builder.AppendLine(@"        {");
 
                     int longestValueName = @enum.Values.Max(kvp => kvp.Key.Length) + 12 + 1; // 12 = indentation
 
                     foreach(var kvp in @enum.Values)
                     {
+                        string name = ConvertName(kvp.Key);
+
                         if(!string.IsNullOrEmpty(kvp.Value))
-                            builder.AppendLine($"            {kvp.Key}".PadRight(longestValueName) + $"= {kvp.Value},");
+                            builder.AppendLine($"            {name}".PadRight(longestValueName) + $"= {kvp.Value},");
                         else
-                            builder.AppendLine($"            {kvp.Key},");
+                            builder.AppendLine($"            {name},");
                     }
 
                     builder.AppendLine(@"        }");
@@ -164,7 +193,7 @@ namespace Generator.Commands
             return name;
         }
 
-        private static string ConvertType(TypeDefinition type)
+        private static string ConvertType(TypeDefinition type, bool arraySuffix = true)
         {
             if(type.Name == "char" && type.Flags.HasFlag(TypeFlags.Unsigned))
             {
@@ -182,7 +211,7 @@ namespace Generator.Commands
                     return "StringBuilder";
             }
 
-            return type.ToString(TypePrefixes);
+            return type.ToString(TypePrefixes, arraySuffix);
         }
 
         private static readonly HashSet<string> ReservedKeywords = new HashSet<string>() {

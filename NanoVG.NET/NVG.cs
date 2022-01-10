@@ -684,19 +684,85 @@ namespace NanoVG
         [DllImport(LibraryName)]
         public static extern void nvgDebugDumpPathCache(NVGcontext* ctx);
 
-        enum NVGwinding
+        public unsafe struct NVGpaint
+        {
+            public fixed float xform[6];
+            public fixed float extent[2];
+            public float radius;
+            public float feather;
+            public NVGcolor innerColor;
+            public NVGcolor outerColor;
+            public int image;
+        }
+
+        public struct NVGcompositeOperationState
+        {
+            public int srcRGB;
+            public int dstRGB;
+            public int srcAlpha;
+            public int dstAlpha;
+        }
+
+        public struct NVGglyphPosition
+        {
+            public string str;
+            public float x;
+            public float minx, maxx;
+        }
+
+        public struct NVGtextRow
+        {
+            public string start;
+            public string end;
+            public string next;
+            public float width;
+            public float minx, maxx;
+        }
+
+        public unsafe struct NVGscissor
+        {
+            public fixed float xform[6];
+            public fixed float extent[2];
+        }
+
+        public struct NVGvertex
+        {
+            public float x,y,u,v;
+        }
+
+        public struct NVGpath
+        {
+            public int first;
+            public int count;
+            public byte closed;
+            public int nbevel;
+            public NVGvertex* fill;
+            public int nfill;
+            public NVGvertex* stroke;
+            public int nstroke;
+            public int winding;
+            public int convex;
+        }
+
+        public struct NVGparams
+        {
+            public void* userPtr;
+            public int edgeAntiAlias;
+        }
+
+        public enum NVGwinding
         {
             NVG_CCW = 1,
             NVG_CW  = 2,
         }
 
-        enum NVGsolidity
+        public enum NVGsolidity
         {
             NVG_SOLID = 1,
             NVG_HOLE  = 2,
         }
 
-        enum NVGlineCap
+        public enum NVGlineCap
         {
             NVG_BUTT,
             NVG_ROUND,
@@ -705,7 +771,7 @@ namespace NanoVG
             NVG_MITER,
         }
 
-        enum NVGalign
+        public enum NVGalign
         {
             NVG_ALIGN_LEFT     = 1<<0,
             NVG_ALIGN_CENTER   = 1<<1,
@@ -716,7 +782,7 @@ namespace NanoVG
             NVG_ALIGN_BASELINE = 1<<6,
         }
 
-        enum NVGblendFactor
+        public enum NVGblendFactor
         {
             NVG_ZERO                = 1<<0,
             NVG_ONE                 = 1<<1,
@@ -731,7 +797,7 @@ namespace NanoVG
             NVG_SRC_ALPHA_SATURATE  = 1<<10,
         }
 
-        enum NVGcompositeOperation
+        public enum NVGcompositeOperation
         {
             NVG_SOURCE_OVER,
             NVG_SOURCE_IN,
@@ -746,7 +812,7 @@ namespace NanoVG
             NVG_XOR,
         }
 
-        enum NVGimageFlags
+        public enum NVGimageFlags
         {
             NVG_IMAGE_GENERATE_MIPMAPS = 1<<0,
             NVG_IMAGE_REPEATX          = 1<<1,
@@ -756,7 +822,7 @@ namespace NanoVG
             NVG_IMAGE_NEAREST          = 1<<5,
         }
 
-        enum NVGtexture
+        public enum NVGtexture
         {
             NVG_TEXTURE_ALPHA = 0x01,
             NVG_TEXTURE_RGBA  = 0x02,

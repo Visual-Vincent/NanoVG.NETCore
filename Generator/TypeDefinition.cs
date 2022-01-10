@@ -15,6 +15,16 @@ namespace Generator
         };
 
         /// <summary>
+        /// Gets the expression defining the size of the array.
+        /// </summary>
+        public string ArrayBounds { get; } = "";
+
+        /// <summary>
+        /// Gets whether or not this is an array type.
+        /// </summary>
+        public bool IsArray { get; } = false;
+
+        /// <summary>
         /// Gets the name of the type.
         /// </summary>
         public string Name { get; }
@@ -62,7 +72,20 @@ namespace Generator
             Flags = flags;
             Pointer = pointerType;
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TypeDefinition"/> class.
+        /// </summary>
+        /// <param name="name">The name of the type.</param>
+        /// <param name="flags">The type flags.</param>
+        /// <param name="arrayBounds">The expression defining the size of the array.</param>
+        public TypeDefinition(string name, TypeFlags flags, string arrayBounds)
+            : this(name, flags)
+        {
+            ArrayBounds = arrayBounds;
+            IsArray = true;
+        }
+
         /// <inheritdoc/>
         public override string ToString()
         {
@@ -73,7 +96,8 @@ namespace Generator
         /// Returns a string that represents the current object.
         /// </summary>
         /// <param name="prefixes">A lookup table of prefixes to apply for each flag that the type has set.</param>
-        public string ToString(IDictionary<TypeFlags, string> prefixes)
+        /// <param name="arraySuffix">Whether or not to add the array bounds as a suffix if <see cref="IsArray"/> is True.</param>
+        public string ToString(IDictionary<TypeFlags, string> prefixes, bool arraySuffix = true)
         {
             StringBuilder builder = new StringBuilder();
 
@@ -95,6 +119,9 @@ namespace Generator
                     builder.Append("**");
                     break;
             }
+
+            if(arraySuffix && IsArray)
+                builder.Append($"[{ArrayBounds}]");
 
             return builder.ToString();
         }
