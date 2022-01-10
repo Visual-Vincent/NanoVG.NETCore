@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -87,7 +87,7 @@ namespace Generator.Commands
                 builder.AppendLine();
                 builder.AppendLine($"namespace {Namespace}");
                 builder.AppendLine("{");
-                builder.AppendLine($"    public unsafe static{(PartialClass ? " partial" : "")} class {ClassName}");
+                builder.AppendLine($"    public static unsafe{(PartialClass ? " partial" : "")} class {ClassName}");
                 builder.AppendLine(@"    {");
                 builder.AppendLine($"        public const string LibraryName = \"{LibraryName}\";");
                 builder.AppendLine();
@@ -127,15 +127,21 @@ namespace Generator.Commands
                     builder.AppendLine();
                 }
 
+                builder.AppendLine("    }");
+                builder.AppendLine();
+
                 // Structs
                 // -----------------------------------------------------------------------------------------------------------------
 
                 foreach(var @struct in structList)
                 {
-                    bool isUnsafe = @struct.Fields.Any(field => field.Type.IsArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds));
+                    bool isUnsafe = @struct.Fields.Any(field => 
+                        field.Type.Pointer != PointerType.None || (field.Type.IsArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds))
+                    );
 
-                    builder.AppendLine($"        public{(isUnsafe ? " unsafe" : "")} struct {ConvertName(@struct.Name)}");
-                    builder.AppendLine(@"        {");
+                    builder.AppendLine($"    [StructLayout(LayoutKind.Sequential, Pack = 1)]");
+                    builder.AppendLine($"    public{(isUnsafe ? " unsafe" : "")} struct {ConvertName(@struct.Name)}");
+                    builder.AppendLine(@"    {");
 
                     foreach(var field in @struct.Fields)
                     {
@@ -146,10 +152,10 @@ namespace Generator.Commands
                         string type = ConvertType(field.Type, false);
                         string bounds = isArray ? $"[{field.Type.ArrayBounds}]" : "";
 
-                        builder.AppendLine($"            public{(isFixed ? " fixed" : "")} {type} {name}{bounds};");
+                        builder.AppendLine($"        public{(isFixed ? " fixed" : "")} {type} {name}{bounds};");
                     }
 
-                    builder.AppendLine(@"        }");
+                    builder.AppendLine(@"    }");
                     builder.AppendLine();
                 }
 
@@ -158,8 +164,8 @@ namespace Generator.Commands
 
                 foreach(var @enum in enumList)
                 {
-                    builder.AppendLine($"        public enum {ConvertName(@enum.Name)}");
-                    builder.AppendLine(@"        {");
+                    builder.AppendLine($"    public enum {ConvertName(@enum.Name)}");
+                    builder.AppendLine(@"    {");
 
                     int longestValueName = @enum.Values.Max(kvp => kvp.Key.Length) + 12 + 1; // 12 = indentation
 
@@ -168,16 +174,15 @@ namespace Generator.Commands
                         string name = ConvertName(kvp.Key);
 
                         if(!string.IsNullOrEmpty(kvp.Value))
-                            builder.AppendLine($"            {name}".PadRight(longestValueName) + $"= {kvp.Value},");
+                            builder.AppendLine($"        {name}".PadRight(longestValueName) + $"= {kvp.Value},");
                         else
-                            builder.AppendLine($"            {name},");
+                            builder.AppendLine($"        {name},");
                     }
 
-                    builder.AppendLine(@"        }");
+                    builder.AppendLine(@"    }");
                     builder.AppendLine();
                 }
 
-                builder.AppendLine("    }");
                 builder.AppendLine("}");
 
                 File.WriteAllText(outputFile, builder.ToString());
