@@ -49,6 +49,9 @@ namespace Generator.Commands
         [Option("partial-class", Required = false, HelpText = "Whether or not to generate a partial class definition")]
         public bool PartialClass { get; set; }
 
+        [Option("funcprefix", Required = false, HelpText = "A common function prefix that may be omitted from the P/Invoke declarations")]
+        public string FunctionPrefix { get; set; }
+
         public override void Execute()
         {
             try
@@ -155,9 +158,15 @@ namespace Generator.Commands
                 // Functions
                 // -----------------------------------------------------------------------------------------------------------------
 
+                bool hasFunctionPrefix = !string.IsNullOrWhiteSpace(FunctionPrefix);
+
                 builder.AppendLine($"    public static unsafe{(PartialClass ? " partial" : "")} class {ClassName}");
                 builder.AppendLine(@"    {");
                 builder.AppendLine($"        public const string LibraryName = \"{LibraryName}\";");
+
+                if(hasFunctionPrefix)
+                    builder.AppendLine($"        public const string FunctionPrefix = \"{FunctionPrefix}\";");
+
                 builder.AppendLine();
 
                 foreach(var function in functionList)
@@ -171,8 +180,22 @@ namespace Generator.Commands
                         builder.AppendLine($"        /// {comment}");
                         builder.AppendLine($"        /// </summary>");
                     }
-                    builder.AppendLine($"        [DllImport(LibraryName)]");
-                    builder.Append($"        public static extern {ConvertType(function.ReturnType)} {ConvertName(function.Name)}");
+
+                    string funcName = function.Name;
+
+                    if(hasFunctionPrefix && funcName.StartsWith(FunctionPrefix))
+                    {
+                        funcName = funcName.Substring(FunctionPrefix.Length);
+                        funcName = ConvertName(funcName);
+                        builder.AppendLine($"        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof({funcName}))]");
+                    }
+                    else
+                    {
+                        funcName = ConvertName(funcName);
+                        builder.AppendLine($"        [DllImport(LibraryName)]");
+                    }
+
+                    builder.Append($"        public static extern {ConvertType(function.ReturnType)} {funcName}");
                     builder.Append("(");
 
                     int args = function.Arguments.Count;
@@ -180,7 +203,7 @@ namespace Generator.Commands
                     {
                         var argument = function.Arguments[i];
                         string name = ConvertName(argument.Name);
-                        string type = ConvertArgType(function, argument);
+                        string type = ConvertArgumentType(function, argument);
 
                         builder.Append($"{type} {name}");
 
@@ -242,7 +265,7 @@ namespace Generator.Commands
         }
 
         // Handles special cases
-        private static string ConvertArgType(FunctionDefinition function, ArgumentDefinition argument, bool arraySuffix = true)
+        private static string ConvertArgumentType(FunctionDefinition function, ArgumentDefinition argument, bool arraySuffix = true)
         {
             TypeDefinition type = argument.Type;
 

@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="&quot;$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe&quot; pinvoke -l NanoVG -n NanoVG -c NVG -f &quot;$(SolutionDir)nanovg\src\nanovg.h&quot; -o &quot;$(ProjectDir)NVG.g.cs&quot; --partial-class" />
+    <Exec Command="&quot;$(SolutionDir)Generator\bin\$(ConfigurationName)\netcoreapp3.1\Generator.exe&quot; pinvoke -l NanoVG -n NanoVG -c NVG -f &quot;$(SolutionDir)nanovg\src\nanovg.h&quot; -o &quot;$(ProjectDir)NVG.g.cs&quot; --funcprefix nvg --partial-class" />
   </Target>
 
 </Project>
