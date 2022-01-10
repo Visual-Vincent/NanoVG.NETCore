@@ -43,4 +43,11 @@ namespace NanoVG
     {
         public float r,g,b,a;
     }
+
+    public enum NVGcreateFlags
+    {
+        NVG_ANTIALIAS       = 1<<0,
+        NVG_STENCIL_STROKES = 1<<1,
+        NVG_DEBUG           = 1<<2,
+    }
 }

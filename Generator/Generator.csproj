@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Licenses\CommandLineParser.txt">
+    <None Update="Licenses\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

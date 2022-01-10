@@ -849,5 +849,8 @@ namespace NanoVG
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(lImageHandleGL3))]
         public static extern uint lImageHandleGL3(this NVGcontext ctx, int image);
 
+        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateGL3Context))]
+        public static extern NVGcontext CreateGL3Context(int flags);
+
     }
 }
