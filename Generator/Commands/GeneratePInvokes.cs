@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security;
 using System.Text;
 using System.Text.RegularExpressions;
 using CommandLine;
@@ -11,6 +13,7 @@ namespace Generator.Commands
     public class GeneratePInvokes : Command
     {
         private static readonly Regex IdentifierRegex = new Regex(@"\A[a-z_][a-z0-9_]*\z", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
+        private static readonly Regex CommentLinebreakRegex = new Regex(@"(?:\r?\n|\r)[ \t]*", RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
 
         private static readonly Dictionary<TypeFlags, string> TypePrefixes = new Dictionary<TypeFlags, string>() {
             { TypeFlags.Const, "" },
@@ -47,12 +50,17 @@ namespace Generator.Commands
 
                 ClangParser parser = new ClangParser();
                 List<FunctionDefinition> functionList = new List<FunctionDefinition>();
+                List<EnumDefinition> enumList = new List<EnumDefinition>();
 
                 foreach(string file in Files)
                 {
                     string contents = File.ReadAllText(file);
-                    var functions = parser.ParseFunctions(contents, false);
+
+                    var functions = parser.ParseFunctions(contents);
                     functionList.AddRange(functions);
+
+                    var enums = parser.ParseEnums(contents);
+                    enumList.AddRange(enums);
                 }
 
                 string outputFile = Path.GetFullPath(Output);
@@ -65,6 +73,10 @@ namespace Generator.Commands
                     Directory.CreateDirectory(outputPath);
 
                 StringBuilder builder = new StringBuilder();
+                builder.AppendLine("// ");
+                builder.AppendLine("// AUTO-GENERATED CODE");
+                builder.AppendLine("// ");
+                builder.AppendLine();
                 builder.AppendLine("using System;");
                 builder.AppendLine("using System.Text;");
                 builder.AppendLine("using System.Runtime.InteropServices;");
@@ -78,6 +90,15 @@ namespace Generator.Commands
 
                 foreach(var function in functionList)
                 {
+                    if(!string.IsNullOrWhiteSpace(function.Comment))
+                    {
+                        string comment = SecurityElement.Escape(function.Comment.Trim());
+                        comment = CommentLinebreakRegex.Replace(comment, $" <br/>{Environment.NewLine}        /// ");
+
+                        builder.AppendLine($"        /// <summary>");
+                        builder.AppendLine($"        /// {comment}");
+                        builder.AppendLine($"        /// </summary>");
+                    }
                     builder.AppendLine($"        [DllImport(LibraryName)]");
                     builder.Append($"        public static extern {ConvertType(function.ReturnType)} {ConvertName(function.Name)}");
                     builder.Append("(");
@@ -96,6 +117,25 @@ namespace Generator.Commands
                     }
 
                     builder.AppendLine(");");
+                    builder.AppendLine();
+                }
+
+                foreach(var @enum in enumList)
+                {
+                    builder.AppendLine($"        enum {@enum.Name}");
+                    builder.AppendLine(@"        {");
+
+                    int longestValueName = @enum.Values.Max(kvp => kvp.Key.Length) + 12 + 1; // 12 = indentation
+
+                    foreach(var kvp in @enum.Values)
+                    {
+                        if(!string.IsNullOrEmpty(kvp.Value))
+                            builder.AppendLine($"            {kvp.Key}".PadRight(longestValueName) + $"= {kvp.Value},");
+                        else
+                            builder.AppendLine($"            {kvp.Key},");
+                    }
+
+                    builder.AppendLine(@"        }");
                     builder.AppendLine();
                 }
 
