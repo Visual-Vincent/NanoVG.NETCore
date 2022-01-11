@@ -124,7 +124,14 @@ namespace Generator.Commands
                         string type = ConvertType(field.Type, false);
                         string bounds = isArray ? $"[{field.Type.ArrayBounds}]" : "";
 
-                        builder.AppendLine($"        public{(isFixed ? " fixed" : "")} {type} {name}{bounds};");
+                        builder.Append("        ");
+
+                        if(type == "string" || type == "StringBuilder")
+                        {
+                            builder.Append("[MarshalAs(UnmanagedType.LPUTF8Str)] ");
+                        }
+
+                        builder.AppendLine($"public{(isFixed ? " fixed" : "")} {type} {name}{bounds};");
                     }
 
                     builder.AppendLine(@"    }");
@@ -195,7 +202,14 @@ namespace Generator.Commands
                         builder.AppendLine($"        [DllImport(LibraryName)]");
                     }
 
-                    builder.Append($"        public static extern {ConvertType(function.ReturnType)} {funcName}");
+                    string returnType = ConvertType(function.ReturnType);
+
+                    if(returnType == "string" || returnType == "StringBuilder")
+                    {
+                        builder.AppendLine("        [return: MarshalAs(UnmanagedType.LPUTF8Str)]");
+                    }
+
+                    builder.Append($"        public static extern {returnType} {funcName}");
                     builder.Append("(");
 
                     int args = function.Arguments.Count;
@@ -204,6 +218,11 @@ namespace Generator.Commands
                         var argument = function.Arguments[i];
                         string name = ConvertName(argument.Name);
                         string type = ConvertArgumentType(function, argument);
+
+                        if(type == "string" || type == "StringBuilder")
+                        {
+                            builder.Append("[MarshalAs(UnmanagedType.LPUTF8Str)] ");
+                        }
 
                         builder.Append($"{type} {name}");
 

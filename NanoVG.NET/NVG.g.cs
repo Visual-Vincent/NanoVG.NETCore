@@ -32,7 +32,7 @@ namespace NanoVG
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct NVGglyphPosition
     {
-        public string str;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string str;
         public float x;
         public float minx, maxx;
     }
@@ -40,9 +40,9 @@ namespace NanoVG
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct NVGtextRow
     {
-        public string start;
-        public string end;
-        public string next;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string start;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string end;
+        [MarshalAs(UnmanagedType.LPUTF8Str)] public string next;
         public float width;
         public float minx, maxx;
     }
@@ -478,7 +478,7 @@ namespace NanoVG
         /// Returns handle to the image.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateImage))]
-        public static extern int CreateImage(this NVGcontext ctx, string filename, int imageFlags);
+        public static extern int CreateImage(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename, int imageFlags);
 
         /// <summary>
         /// Creates image by loading it from the specified chunk of memory. <br/>
@@ -673,32 +673,32 @@ namespace NanoVG
         /// Returns handle to the font.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateFont))]
-        public static extern int CreateFont(this NVGcontext ctx, string name, string filename);
+        public static extern int CreateFont(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename);
 
         /// <summary>
         /// fontIndex specifies which font face to load from a .ttf/.ttc file.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateFontAtIndex))]
-        public static extern int CreateFontAtIndex(this NVGcontext ctx, string name, string filename, int fontIndex);
+        public static extern int CreateFontAtIndex(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string filename, int fontIndex);
 
         /// <summary>
         /// Creates font by loading it from the specified memory chunk. <br/>
         /// Returns handle to the font.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateFontMem))]
-        public static extern int CreateFontMem(this NVGcontext ctx, string name, byte[] data, int ndata, int freeData);
+        public static extern int CreateFontMem(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, byte[] data, int ndata, int freeData);
 
         /// <summary>
         /// fontIndex specifies which font face to load from a .ttf/.ttc file.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateFontMemAtIndex))]
-        public static extern int CreateFontMemAtIndex(this NVGcontext ctx, string name, byte[] data, int ndata, int freeData, int fontIndex);
+        public static extern int CreateFontMemAtIndex(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string name, byte[] data, int ndata, int freeData, int fontIndex);
 
         /// <summary>
         /// Finds a loaded font of specified name, and returns handle to it, or -1 if the font is not found.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(FindFont))]
-        public static extern int FindFont(this NVGcontext ctx, string name);
+        public static extern int FindFont(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
 
         /// <summary>
         /// Adds a fallback font by handle.
@@ -710,7 +710,7 @@ namespace NanoVG
         /// Adds a fallback font by name.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(AddFallbackFont))]
-        public static extern int AddFallbackFont(this NVGcontext ctx, string baseFont, string fallbackFont);
+        public static extern int AddFallbackFont(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string baseFont, [MarshalAs(UnmanagedType.LPUTF8Str)] string fallbackFont);
 
         /// <summary>
         /// Resets fallback fonts by handle.
@@ -722,7 +722,7 @@ namespace NanoVG
         /// Resets fallback fonts by name.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(ResetFallbackFonts))]
-        public static extern void ResetFallbackFonts(this NVGcontext ctx, string baseFont);
+        public static extern void ResetFallbackFonts(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string baseFont);
 
         /// <summary>
         /// Sets the font size of current text style.
@@ -764,13 +764,13 @@ namespace NanoVG
         /// Sets the font face based on specified name of current text style.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(FontFace))]
-        public static extern void FontFace(this NVGcontext ctx, string font);
+        public static extern void FontFace(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string font);
 
         /// <summary>
         /// Draws text string at specified location. If end is specified only the sub-string up to the end is drawn.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(Text))]
-        public static extern float Text(this NVGcontext ctx, float x, float y, string @string, string end);
+        public static extern float Text(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end);
 
         /// <summary>
         /// Draws multi-line text string at specified location wrapped at the specified width. If end is specified only the sub-string up to the end is drawn. <br/>
@@ -778,7 +778,7 @@ namespace NanoVG
         /// Words longer than the max width are slit at nearest character (i.e. no hyphenation).
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBox))]
-        public static extern void TextBox(this NVGcontext ctx, float x, float y, float breakRowWidth, string @string, string end);
+        public static extern void TextBox(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end);
 
         /// <summary>
         /// Measures the specified text string. Parameter bounds should be a pointer to float[4], <br/>
@@ -787,7 +787,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBounds))]
-        public static extern float TextBounds(this NVGcontext ctx, float x, float y, string @string, string end, float* bounds);
+        public static extern float TextBounds(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float* bounds);
 
         /// <summary>
         /// Measures the specified multi-text string. Parameter bounds should be a pointer to float[4], <br/>
@@ -795,14 +795,14 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBoxBounds))]
-        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, string @string, string end, float* bounds);
+        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float* bounds);
 
         /// <summary>
         /// Calculates the glyph x positions of the specified text. If end is specified only the sub-string will be used. <br/>
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextGlyphPositions))]
-        public static extern int TextGlyphPositions(this NVGcontext ctx, float x, float y, string @string, string end, NVGglyphPosition[] positions, int maxPositions);
+        public static extern int TextGlyphPositions(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, NVGglyphPosition[] positions, int maxPositions);
 
         /// <summary>
         /// Returns the vertical metrics based on the current text style. <br/>
@@ -817,7 +817,7 @@ namespace NanoVG
         /// Words longer than the max width are slit at nearest character (i.e. no hyphenation).
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBreakLines))]
-        public static extern int TextBreakLines(this NVGcontext ctx, string @string, string end, float breakRowWidth, NVGtextRow[] rows, int maxRows);
+        public static extern int TextBreakLines(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float breakRowWidth, NVGtextRow[] rows, int maxRows);
 
         /// <summary>
         /// Constructor and destructor, called by the render back-end.
