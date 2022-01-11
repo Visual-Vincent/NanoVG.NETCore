@@ -12,10 +12,13 @@ namespace NanoVG.Test
         {
             var nativeWindowSettings = new NativeWindowSettings() {
                 APIVersion = new Version(3, 3),
-                Size = new Vector2i(800, 600),
+                Size = new Vector2i(1000, 600),
                 Title = "NanoVG.NET Test",
-                NumberOfSamples = 8, // 8x MSAA,
-                Flags = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ContextFlags.ForwardCompatible : ContextFlags.Default
+                Flags = RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? ContextFlags.ForwardCompatible : ContextFlags.Default,
+
+            #if DEMO_MSAA
+                NumberOfSamples = 4,
+            #endif
             };
 
             var gameWindowSettings = new GameWindowSettings();

@@ -3,6 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace NanoVG.Test
 {
@@ -13,43 +14,77 @@ namespace NanoVG.Test
         {
         }
 
-        NVGcontext ctx;
+        NVGcontext vg;
+        DemoData demoData;
+
+        bool blowup = false;
 
         protected override void OnLoad()
         {
             base.OnLoad();
-            ctx = NVG.CreateGL3Context((int)(NVGcreateFlags.NVG_STENCIL_STROKES | NVGcreateFlags.NVG_ANTIALIAS));
+#if DEMO_MSAA
+            vg = NVG.CreateGL3Context((int)(NVGcreateFlags.NVG_STENCIL_STROKES));
+#else
+            vg = NVG.CreateGL3Context((int)(NVGcreateFlags.NVG_ANTIALIAS | NVGcreateFlags.NVG_STENCIL_STROKES));
+#endif
+            demoData = NVGDemo.loadDemoData(vg);
+
+            if(demoData == null)
+                Environment.Exit(1);
         }
 
-        protected override void OnRenderFrame(FrameEventArgs e)
+        protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
-            base.OnRenderFrame(e);
+            base.OnKeyDown(e);
 
-            GL.ClearColor(Color4.Black);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+            switch(e.Key)
+            {
+                case Keys.Escape:
+                    Close();
+                    break;
 
-            ctx.BeginFrame(ClientSize.X, ClientSize.Y, 96.0f);
-            OnRenderUI(ctx);
-            ctx.EndFrame();
-
-            SwapBuffers();
-        }
-
-        protected virtual void OnRenderUI(NVGcontext ctx)
-        {
-            ctx.BeginPath();
-
-            ctx.RoundedRect(8, 8, 300, 300, 16);
-            ctx.FillColor(new NVGcolor() { r = 255, g = 0, b = 0, a = 255 });
-            ctx.Fill();
-
-            ctx.Restore();
+                case Keys.Space:
+                    blowup = !blowup;
+                    break;
+            }
         }
 
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
             GL.Viewport(0, 0, e.Width, e.Height);
+        }
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            base.OnRenderFrame(e);
+            float pixelRatio = ClientSize.X / ClientSize.Y;
+
+            GL.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+
+            vg.BeginFrame(ClientSize.X, ClientSize.Y, pixelRatio);
+
+            DrawFps(vg, e);
+            NVGDemo.renderDemo(vg, MouseState.X, MouseState.Y, ClientSize.X, ClientSize.Y, (float)GLFW.GetTime(), blowup, demoData);
+
+            vg.EndFrame();
+
+            SwapBuffers();
+        }
+
+        private void DrawFps(NVGcontext vg, FrameEventArgs e)
+        {
+            int fps = (int)Math.Round(1.0 / e.Time);
+            vg.Save();
+
+            vg.FontSize(28.0f);
+            vg.FontFace("sans");
+            vg.FillColor(NVG.RGBA(255, 255, 255, 255));
+            vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_TOP));
+            vg.Text(4.0f, 4.0f, $"{fps} FPS", null);
+
+            vg.Restore();
         }
     }
 }
