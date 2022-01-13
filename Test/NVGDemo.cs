@@ -514,7 +514,7 @@ namespace NanoVG.Test
 			float ix,iy,iw,ih;
 			float thumb = 60.0f;
 			float arry = 30.5f;
-			int imgw = 0, imgh = 0;
+			int imgw, imgh;
 			float stackh = (nimages/2) * (thumb+10) + 10;
 			int i;
 			float u = (1+MathF.Cos(t*0.5f))*0.5f;
@@ -554,7 +554,7 @@ namespace NanoVG.Test
 				ty = y+10;
 				tx += (i%2) * (thumb+10);
 				ty += (i/2) * (thumb+10);
-				vg.ImageSize(images[i], ref imgw, ref imgh);
+				vg.ImageSize(images[i], out imgw, out imgh);
 				if (imgw < imgh) {
 					iw = thumb;
 					ih = iw * (float)imgh/(float)imgw;
@@ -866,7 +866,7 @@ namespace NanoVG.Test
 			vg.FontSize(15.0f);
 			vg.FontFace("sans");
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_TOP));
-			vg.TextMetrics(null, null, &lineh);
+			vg.TextMetrics(null, null, ref lineh);
 
 			// The text break API can be used to fill a large buffer of rows,
 			// or to iterate over the text just few lines (or just one) at a time.
@@ -915,8 +915,7 @@ namespace NanoVG.Test
 			}
 
 			if (gutter != 0) {
-				char txt[16];
-				snprintf(txt, sizeof(txt), "%d", gutter);
+				string txt = gutter.ToString();
 				vg.FontSize(12.0f);
 				vg.TextAlign((int)(NVGalign.NVG_ALIGN_RIGHT | NVGalign.NVG_ALIGN_MIDDLE));
 

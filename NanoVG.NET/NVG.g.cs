@@ -504,7 +504,7 @@ namespace NanoVG
         /// Returns the dimensions of a created image.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(ImageSize))]
-        public static extern void ImageSize(this NVGcontext ctx, int image, ref int w, ref int h);
+        public static extern void ImageSize(this NVGcontext ctx, int image, out int w, out int h);
         
         /// <summary>
         /// Deletes created image.
@@ -809,7 +809,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextMetrics))]
-        public static extern void TextMetrics(this NVGcontext ctx, ref float ascender, ref float descender, ref float lineh);
+        public static extern void TextMetrics(this NVGcontext ctx, out float ascender, out float descender, out float lineh);
         
         /// <summary>
         /// Breaks the specified text into lines. If end is specified only the sub-string will be used. <br/>

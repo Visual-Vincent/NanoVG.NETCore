@@ -58,6 +58,10 @@ namespace NanoVG.Test
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
+
+            if(WindowState == WindowState.Minimized)
+                return;
+
             float pixelRatio = ClientSize.X / ClientSize.Y;
 
             GL.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
