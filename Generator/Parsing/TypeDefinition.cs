@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Generator
+namespace Generator.Parsing
 {
     /// <summary>
     /// Holds information about a function/argument type.

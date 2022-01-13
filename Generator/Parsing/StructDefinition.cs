@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Generator
+namespace Generator.Parsing
 {
     /// <summary>
     /// Holds information about a struct.

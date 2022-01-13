@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CommandLine;
+using Generator.Parsing;
+using Generator.Parsing.Languages;
 
 namespace Generator.Commands
 {

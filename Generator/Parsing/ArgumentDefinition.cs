@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Generator
+namespace Generator.Parsing
 {
     /// <summary>
     /// Holds information about a function argument.

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Generator
+namespace Generator.Parsing.Languages
 {
     /// <summary>
     /// Provides functionality for parsing simple C code.
     /// </summary>
     /// <remarks>The parser is very basic. Complex code may generate invalid definitions.</remarks>
-    public class ClangParser
+    public class ClangParser : ICodeParser
     {
         private const RegexOptions REGEX_OPTIONS = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
@@ -62,10 +62,7 @@ namespace Generator
             return new TypeDefinition(type, flags);
         }
 
-        /// <summary>
-        /// Parses the enums in the specified code.
-        /// </summary>
-        /// <param name="sourceCode">The code to parse.</param>
+        /// <inheritdoc/>
         public EnumDefinition[] ParseEnums(string sourceCode)
         {
             List<EnumDefinition> enums = new List<EnumDefinition>();
@@ -95,6 +92,12 @@ namespace Generator
             return enums.ToArray();
         }
 
+        /// <inheritdoc/>
+        public FunctionDefinition[] ParseFunctions(string sourceCode)
+        {
+            return ParseFunctions(sourceCode, true);
+        }
+
         /// <summary>
         /// Parses the functions in the specified code.
         /// </summary>
@@ -103,6 +106,9 @@ namespace Generator
         public FunctionDefinition[] ParseFunctions(string sourceCode, bool parseComments = true)
         {
             List<FunctionDefinition> functions = new List<FunctionDefinition>();
+
+            if(!parseComments)
+                sourceCode = RemoveComments(sourceCode);
 
             var matches = FunctionRegex.Matches(sourceCode);
 
@@ -163,10 +169,7 @@ namespace Generator
             return functions.ToArray();
         }
 
-        /// <summary>
-        /// Parses the structs in the specified code.
-        /// </summary>
-        /// <param name="sourceCode">The code to parse.</param>
+        /// <inheritdoc/>
         public StructDefinition[] ParseStructs(string sourceCode)
         {
             List<StructDefinition> structs = new List<StructDefinition>();
@@ -200,10 +203,7 @@ namespace Generator
             return structs.ToArray();
         }
 
-        /// <summary>
-        /// Removes all comments from the specified code.
-        /// </summary>
-        /// <param name="sourceCode">The code to modify.</param>
+        /// <inheritdoc/>
         public string RemoveComments(string sourceCode)
         {
             return CommentRegex.Replace(sourceCode, "");
