@@ -160,7 +160,7 @@ namespace NanoVG
         NVG_TEXTURE_RGBA  = 0x02,
     }
     
-    public static unsafe partial class NVG
+    public static partial class NVG
     {
         public const string LibraryName = "NanoVG";
         public const string FunctionPrefix = "nvg";
@@ -401,68 +401,68 @@ namespace NanoVG
         /// There should be space for 6 floats in the return buffer for the values a-f.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CurrentTransform))]
-        public static extern void CurrentTransform(this NVGcontext ctx, float* xform);
+        public static extern void CurrentTransform(this NVGcontext ctx, float[] xform);
         
         /// <summary>
         /// Sets the transform to identity matrix.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformIdentity))]
-        public static extern void TransformIdentity(float* dst);
+        public static extern void TransformIdentity(float[] dst);
         
         /// <summary>
         /// Sets the transform to translation matrix matrix.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformTranslate))]
-        public static extern void TransformTranslate(float* dst, float tx, float ty);
+        public static extern void TransformTranslate(float[] dst, float tx, float ty);
         
         /// <summary>
         /// Sets the transform to scale matrix.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformScale))]
-        public static extern void TransformScale(float* dst, float sx, float sy);
+        public static extern void TransformScale(float[] dst, float sx, float sy);
         
         /// <summary>
         /// Sets the transform to rotate matrix. Angle is specified in radians.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformRotate))]
-        public static extern void TransformRotate(float* dst, float a);
+        public static extern void TransformRotate(float[] dst, float a);
         
         /// <summary>
         /// Sets the transform to skew-x matrix. Angle is specified in radians.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformSkewX))]
-        public static extern void TransformSkewX(float* dst, float a);
+        public static extern void TransformSkewX(float[] dst, float a);
         
         /// <summary>
         /// Sets the transform to skew-y matrix. Angle is specified in radians.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformSkewY))]
-        public static extern void TransformSkewY(float* dst, float a);
+        public static extern void TransformSkewY(float[] dst, float a);
         
         /// <summary>
         /// Sets the transform to the result of multiplication of two transforms, of A = A*B.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformMultiply))]
-        public static extern void TransformMultiply(float* dst, float* src);
+        public static extern void TransformMultiply(float[] dst, float[] src);
         
         /// <summary>
         /// Sets the transform to the result of multiplication of two transforms, of A = B*A.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformPremultiply))]
-        public static extern void TransformPremultiply(float* dst, float* src);
+        public static extern void TransformPremultiply(float[] dst, float[] src);
         
         /// <summary>
         /// Sets the destination to inverse of specified transform. <br/>
         /// Returns 1 if the inverse could be calculated, else 0.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformInverse))]
-        public static extern int TransformInverse(float* dst, float* src);
+        public static extern int TransformInverse(float[] dst, float[] src);
         
         /// <summary>
         /// Transform a point by given transform.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TransformPoint))]
-        public static extern void TransformPoint(float* dstx, float* dsty, float* xform, float srcx, float srcy);
+        public static extern void TransformPoint(float[] dstx, float[] dsty, float[] xform, float srcx, float srcy);
         
         /// <summary>
         /// Converts degrees to radians and vice versa.
@@ -504,7 +504,7 @@ namespace NanoVG
         /// Returns the dimensions of a created image.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(ImageSize))]
-        public static extern void ImageSize(this NVGcontext ctx, int image, int* w, int* h);
+        public static extern void ImageSize(this NVGcontext ctx, int image, ref int w, ref int h);
         
         /// <summary>
         /// Deletes created image.
@@ -787,7 +787,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBounds))]
-        public static extern float TextBounds(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float* bounds);
+        public static extern float TextBounds(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float[] bounds);
         
         /// <summary>
         /// Measures the specified multi-text string. Parameter bounds should be a pointer to float[4], <br/>
@@ -795,7 +795,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBoxBounds))]
-        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float* bounds);
+        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float[] bounds);
         
         /// <summary>
         /// Calculates the glyph x positions of the specified text. If end is specified only the sub-string will be used. <br/>
@@ -809,7 +809,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextMetrics))]
-        public static extern void TextMetrics(this NVGcontext ctx, float* ascender, float* descender, float* lineh);
+        public static extern void TextMetrics(this NVGcontext ctx, ref float ascender, ref float descender, ref float lineh);
         
         /// <summary>
         /// Breaks the specified text into lines. If end is specified only the sub-string will be used. <br/>
@@ -818,18 +818,6 @@ namespace NanoVG
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBreakLines))]
         public static extern int TextBreakLines(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float breakRowWidth, NVGtextRow[] rows, int maxRows);
-        
-        /// <summary>
-        /// Constructor and destructor, called by the render back-end.
-        /// </summary>
-        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(CreateInternal))]
-        public static extern NVGcontext CreateInternal(NVGparams* @params);
-        
-        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(DeleteInternal))]
-        public static extern void DeleteInternal(this NVGcontext ctx);
-        
-        [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(InternalParams))]
-        public static extern NVGparams* InternalParams(this NVGcontext ctx);
         
         /// <summary>
         /// Debug function to dump cached path data.

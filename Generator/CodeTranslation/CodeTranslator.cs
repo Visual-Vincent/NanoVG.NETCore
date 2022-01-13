@@ -78,10 +78,9 @@ namespace Generator.CodeTranslation
                 snippet = generator.GenerateStruct(@struct, i, c);
 
                 if(!string.IsNullOrEmpty(snippet))
-                {
                     builder.Append(snippet);
-                    i++;
-                }
+
+                i++;
             }
 
             // Enums
@@ -95,10 +94,9 @@ namespace Generator.CodeTranslation
                 snippet = generator.GenerateEnum(@enum, i, c);
 
                 if(!string.IsNullOrEmpty(snippet))
-                {
                     builder.Append(snippet);
-                    i++;
-                }
+
+                i++;
             }
 
             // Functions
@@ -112,10 +110,9 @@ namespace Generator.CodeTranslation
                 snippet = generator.GenerateFunction(function, i, c);
 
                 if(!string.IsNullOrEmpty(snippet))
-                {
                     builder.Append(snippet);
-                    i++;
-                }
+
+                i++;
             }
 
             // End of file

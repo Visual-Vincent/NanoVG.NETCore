@@ -514,7 +514,7 @@ namespace NanoVG.Test
 			float ix,iy,iw,ih;
 			float thumb = 60.0f;
 			float arry = 30.5f;
-			int imgw, imgh;
+			int imgw = 0, imgh = 0;
 			float stackh = (nimages/2) * (thumb+10) + 10;
 			int i;
 			float u = (1+MathF.Cos(t*0.5f))*0.5f;
@@ -554,7 +554,7 @@ namespace NanoVG.Test
 				ty = y+10;
 				tx += (i%2) * (thumb+10);
 				ty += (i/2) * (thumb+10);
-				vg.ImageSize(images[i], &imgw, &imgh);
+				vg.ImageSize(images[i], ref imgw, ref imgh);
 				if (imgw < imgh) {
 					iw = thumb;
 					ih = iw * (float)imgh/(float)imgw;

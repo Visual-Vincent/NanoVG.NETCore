@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using Generator.Extensions;
 using Generator.Parsing;
 
+using ArgumentMap = System.Collections.Generic.Dictionary<string, System.Func<Generator.Parsing.TypeDefinition, string>>;
+
 namespace Generator.CodeTranslation.Generators
 {
     /// <summary>
@@ -33,6 +35,31 @@ namespace Generator.CodeTranslation.Generators
         private static readonly Dictionary<TypeFlags, string> TypePrefixes = new Dictionary<TypeFlags, string>() {
             { TypeFlags.Const, "" },
             { TypeFlags.Unsigned, "u" }
+        };
+
+        private static readonly HashSet<string> FunctionsToIgnore = new HashSet<string>() {
+            "nvgCreateInternal", "nvgDeleteInternal", "nvgInternalParams"
+        };
+
+        private static readonly Dictionary<string, ArgumentMap> FunctionArgumentOverrides = new Dictionary<string, ArgumentMap>()  {
+        //  { FuncName,                                    {{ ArgName,              ArgType    }} }
+            { "nvgCurrentTransform",     new ArgumentMap() {{ "xform",     type => "float[]"   }} },
+            { "nvgTransformIdentity",    new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformTranslate",   new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformScale",       new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformRotate",      new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformSkewX",       new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformSkewY",       new ArgumentMap() {{ "dst",       type => "float[]"   }} },
+            { "nvgTransformMultiply",    new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
+            { "nvgTransformPremultiply", new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
+            { "nvgTransformInverse",     new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
+            { "nvgTransformPoint",       new ArgumentMap() {{ "dstx",      type => "float[]"   }, { "dsty",      type => "float[]"   }, { "xform", type => "float[]"   }} },
+            { "nvgImageSize",            new ArgumentMap() {{ "w",         type => "ref int"   }, { "h",         type => "ref int"   }} },
+            { "nvgTextMetrics",          new ArgumentMap() {{ "ascender",  type => "ref float" }, { "descender", type => "ref float" }, { "lineh", type => "ref float" }} },
+            { "nvgTextBounds",           new ArgumentMap() {{ "bounds",    type => "float[]"   }} },
+            { "nvgTextBoxBounds",        new ArgumentMap() {{ "bounds",    type => "float[]"   }} },
+            { "nvgTextGlyphPositions",   new ArgumentMap() {{ "positions", type => type.Pointer == PointerType.Standard ? $"{type.Name}[]" : null }} },
+            { "nvgTextBreakLines",       new ArgumentMap() {{ "rows",      type => type.Pointer == PointerType.Standard ? $"{type.Name}[]" : null }} },
         };
 
         private string libraryName;
@@ -138,13 +165,16 @@ namespace Generator.CodeTranslation.Generators
         /// <inheritdoc/>
         public string GenerateFunction(FunctionDefinition function, int index, int count)
         {
+            if(FunctionsToIgnore.Contains(function.Name))
+                return null;
+
             StringBuilder builder = new StringBuilder();
 
             bool hasFunctionPrefix = !string.IsNullOrWhiteSpace(functionPrefix);
 
             if(index == 0)
             {
-                builder.AppendLine(indentation, $"public static unsafe{(partialClass ? " partial" : "")} class {className}");
+                builder.AppendLine(indentation, $"public static{(partialClass ? " partial" : "")} class {className}");
                 builder.AppendLine(indentation, @"{");
                 indentation.Indent(IndentAmount);
 
@@ -312,11 +342,12 @@ namespace Generator.CodeTranslation.Generators
             if(type.Name.Equals("NVGcontext", StringComparison.OrdinalIgnoreCase))
                 return $"this {type.Name}";
 
-            if(function.Name == "nvgTextGlyphPositions" && argument.Name == "positions" && type.Pointer == PointerType.Standard)
-                return $"{type.Name}[]";
-
-            if(function.Name == "nvgTextBreakLines" && argument.Name == "rows" && type.Pointer == PointerType.Standard)
-                return $"{type.Name}[]";
+            if(FunctionArgumentOverrides.TryGetValue(function.Name, out var map) && map.TryGetValue(argument.Name, out var argOverride))
+            {
+                var newType = argOverride(type);
+                if(newType != null)
+                    return newType;
+            }
 
             return ConvertType(type, arraySuffix);
         }
