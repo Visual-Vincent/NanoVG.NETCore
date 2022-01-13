@@ -78,7 +78,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\NanoVG.Native\Win32\Release\NanoVG.dll" Link="NanoVG.dll">
+    <None Include="..\NanoVG.Native\Win32\$(Configuration)\NanoVG.dll" Link="NanoVG.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

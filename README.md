@@ -3,6 +3,9 @@
 
 Inspired by [Saša Barišić's NanoVG port](https://github.com/sbarisic/nanovg_dotnet) for .NET Framework. Remade from scratch to build a more automated workflow, making it easier to stay up-to-date with NanoVG.
 
+## Screenshot
+[![screenshot](screenshot.png)](screenshot.png)
+
 ## System requirements
 - .NET Core 3.1 or newer
 

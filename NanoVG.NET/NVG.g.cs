@@ -32,7 +32,7 @@ namespace NanoVG
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct NVGglyphPosition
     {
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string str;
+        public IntPtr str;
         public float x;
         public float minx, maxx;
     }
@@ -40,9 +40,9 @@ namespace NanoVG
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public unsafe struct NVGtextRow
     {
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string start;
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string end;
-        [MarshalAs(UnmanagedType.LPUTF8Str)] public string next;
+        public IntPtr start;
+        public IntPtr end;
+        public IntPtr next;
         public float width;
         public float minx, maxx;
     }
@@ -770,7 +770,7 @@ namespace NanoVG
         /// Draws text string at specified location. If end is specified only the sub-string up to the end is drawn.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(Text))]
-        public static extern float Text(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end);
+        public static extern float Text(this NVGcontext ctx, float x, float y, IntPtr @string, IntPtr end);
         
         /// <summary>
         /// Draws multi-line text string at specified location wrapped at the specified width. If end is specified only the sub-string up to the end is drawn. <br/>
@@ -778,7 +778,7 @@ namespace NanoVG
         /// Words longer than the max width are slit at nearest character (i.e. no hyphenation).
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBox))]
-        public static extern void TextBox(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end);
+        public static extern void TextBox(this NVGcontext ctx, float x, float y, float breakRowWidth, IntPtr @string, IntPtr end);
         
         /// <summary>
         /// Measures the specified text string. Parameter bounds should be a pointer to float[4], <br/>
@@ -787,7 +787,7 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBounds))]
-        public static extern float TextBounds(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float[] bounds);
+        public static extern float TextBounds(this NVGcontext ctx, float x, float y, IntPtr @string, IntPtr end, float[] bounds);
         
         /// <summary>
         /// Measures the specified multi-text string. Parameter bounds should be a pointer to float[4], <br/>
@@ -795,14 +795,14 @@ namespace NanoVG
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBoxBounds))]
-        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float[] bounds);
+        public static extern void TextBoxBounds(this NVGcontext ctx, float x, float y, float breakRowWidth, IntPtr @string, IntPtr end, float[] bounds);
         
         /// <summary>
         /// Calculates the glyph x positions of the specified text. If end is specified only the sub-string will be used. <br/>
         /// Measured values are returned in local coordinate space.
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextGlyphPositions))]
-        public static extern int TextGlyphPositions(this NVGcontext ctx, float x, float y, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, NVGglyphPosition[] positions, int maxPositions);
+        public static extern int TextGlyphPositions(this NVGcontext ctx, float x, float y, IntPtr @string, IntPtr end, IntPtr positions, int maxPositions);
         
         /// <summary>
         /// Returns the vertical metrics based on the current text style. <br/>
@@ -817,7 +817,7 @@ namespace NanoVG
         /// Words longer than the max width are slit at nearest character (i.e. no hyphenation).
         /// </summary>
         [DllImport(LibraryName, EntryPoint = FunctionPrefix + nameof(TextBreakLines))]
-        public static extern int TextBreakLines(this NVGcontext ctx, [MarshalAs(UnmanagedType.LPUTF8Str)] string @string, [MarshalAs(UnmanagedType.LPUTF8Str)] string end, float breakRowWidth, NVGtextRow[] rows, int maxRows);
+        public static extern int TextBreakLines(this NVGcontext ctx, IntPtr @string, IntPtr end, float breakRowWidth, IntPtr rows, int maxRows);
         
         /// <summary>
         /// Debug function to dump cached path data.

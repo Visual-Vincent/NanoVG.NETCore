@@ -86,7 +86,7 @@ namespace NanoVG.Test
             vg.FontFace("sans");
             vg.FillColor(NVG.RGBA(255, 255, 255, 255));
             vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_TOP));
-            vg.Text(4.0f, 4.0f, $"{fps} FPS", null);
+            vg.Text(4.0f, 4.0f, $"{fps} FPS");
 
             vg.Restore();
         }

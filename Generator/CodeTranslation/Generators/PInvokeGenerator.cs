@@ -53,13 +53,21 @@ namespace Generator.CodeTranslation.Generators
             { "nvgTransformMultiply",    new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
             { "nvgTransformPremultiply", new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
             { "nvgTransformInverse",     new ArgumentMap() {{ "dst",       type => "float[]"   }, { "src",       type => "float[]"   }} },
-            { "nvgTransformPoint",       new ArgumentMap() {{ "dstx",      type => "float[]"   }, { "dsty",      type => "float[]"   }, { "xform", type => "float[]"   }} },
+            { "nvgTransformPoint",       new ArgumentMap() {{ "dstx",      type => "float[]"   }, { "dsty",      type => "float[]"   }, { "xform",     type => "float[]"   }} },
             { "nvgImageSize",            new ArgumentMap() {{ "w",         type => "out int"   }, { "h",         type => "out int"   }} },
-            { "nvgTextMetrics",          new ArgumentMap() {{ "ascender",  type => "out float" }, { "descender", type => "out float" }, { "lineh", type => "out float" }} },
-            { "nvgTextBounds",           new ArgumentMap() {{ "bounds",    type => "float[]"   }} },
-            { "nvgTextBoxBounds",        new ArgumentMap() {{ "bounds",    type => "float[]"   }} },
-            { "nvgTextGlyphPositions",   new ArgumentMap() {{ "positions", type => type.Pointer == PointerType.Standard ? $"{type.Name}[]" : null }} },
-            { "nvgTextBreakLines",       new ArgumentMap() {{ "rows",      type => type.Pointer == PointerType.Standard ? $"{type.Name}[]" : null }} },
+            { "nvgTextMetrics",          new ArgumentMap() {{ "ascender",  type => "out float" }, { "descender", type => "out float" }, { "lineh",     type => "out float" }} },
+            { "nvgText",                 new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }} },
+            { "nvgTextBounds",           new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }, { "bounds",    type => "float[]"   }} },
+            { "nvgTextBox",              new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }} },
+            { "nvgTextBoxBounds",        new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }, { "bounds",    type => "float[]"   }} },
+            { "nvgTextGlyphPositions",   new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }, { "positions", type => type.Pointer == PointerType.Standard ? $"IntPtr" : null }} },
+            { "nvgTextBreakLines",       new ArgumentMap() {{ "string",    type => "IntPtr"    }, { "end",       type => "IntPtr"    }, { "rows",      type => type.Pointer == PointerType.Standard ? $"IntPtr" : null }} },
+        };
+
+        private static readonly Dictionary<string, ArgumentMap> StructFieldOverrides = new Dictionary<string, ArgumentMap>()  {
+        //  { StructName,                           {{ FieldName,         FieldType }} }
+            { "NVGglyphPosition", new ArgumentMap() {{ "str",     type => "IntPtr"  }} },
+            { "NVGtextRow",       new ArgumentMap() {{ "start",   type => "IntPtr"  }, { "end", type => "IntPtr" }, { "next", type => "IntPtr" }} },
         };
 
         private string libraryName;
@@ -273,7 +281,7 @@ namespace Generator.CodeTranslation.Generators
                 bool isFixed = isArray && !string.IsNullOrWhiteSpace(field.Type.ArrayBounds);
 
                 string name = ConvertName(field.Name);
-                string type = ConvertType(field.Type, false);
+                string type = ConvertFieldType(@struct, field, false);
                 string bounds = isArray ? $"[{field.Type.ArrayBounds}]" : "";
 
                 builder.Append(indentation);
@@ -345,6 +353,21 @@ namespace Generator.CodeTranslation.Generators
             if(FunctionArgumentOverrides.TryGetValue(function.Name, out var map) && map.TryGetValue(argument.Name, out var argOverride))
             {
                 var newType = argOverride(type);
+                if(newType != null)
+                    return newType;
+            }
+
+            return ConvertType(type, arraySuffix);
+        }
+
+        // Handles special cases
+        private static string ConvertFieldType(StructDefinition @struct, FieldDefinition field, bool arraySuffix = true)
+        {
+            TypeDefinition type = field.Type;
+
+            if(StructFieldOverrides.TryGetValue(@struct.Name, out var map) && map.TryGetValue(field.Name, out var fieldOverride))
+            {
+                var newType = fieldOverride(type);
                 if(newType != null)
                     return newType;
             }

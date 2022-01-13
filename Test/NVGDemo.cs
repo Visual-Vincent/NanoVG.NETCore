@@ -95,11 +95,11 @@ namespace NanoVG.Test
 
 			vg.FontBlur(2);
 			vg.FillColor(NVG.RGBA(0,0,0,128));
-			vg.Text(x+w/2,y+16+1, title, null);
+			vg.Text(x+w/2,y+16+1, title);
 
 			vg.FontBlur(0);
 			vg.FillColor(NVG.RGBA(220,220,220,160));
-			vg.Text(x+w/2,y+16, title, null);
+			vg.Text(x+w/2,y+16, title);
 
 			vg.Restore();
 		}
@@ -125,20 +125,20 @@ namespace NanoVG.Test
 			vg.FontFace("icons");
 			vg.FillColor(NVG.RGBA(255,255,255,64));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_CENTER | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+h*0.55f, y+h*0.55f, cpToUTF8(ICON_SEARCH), null);
+			vg.Text(x+h*0.55f, y+h*0.55f, cpToUTF8(ICON_SEARCH));
 
 			vg.FontSize(17.0f);
 			vg.FontFace("sans");
 			vg.FillColor(NVG.RGBA(255,255,255,32));
 
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+h*1.05f,y+h*0.5f,text, null);
+			vg.Text(x+h*1.05f,y+h*0.5f,text);
 
 			vg.FontSize(h*1.3f);
 			vg.FontFace("icons");
 			vg.FillColor(NVG.RGBA(255,255,255,32));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_CENTER | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+w-h*0.55f, y+h*0.55f, cpToUTF8(ICON_CIRCLED_CROSS), null);
+			vg.Text(x+w-h*0.55f, y+h*0.55f, cpToUTF8(ICON_CIRCLED_CROSS));
 		}
 
 		public static void drawDropDown(NVGcontext vg, string text, float x, float y, float w, float h)
@@ -161,13 +161,13 @@ namespace NanoVG.Test
 			vg.FontFace("sans");
 			vg.FillColor(NVG.RGBA(255,255,255,160));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+h*0.3f,y+h*0.5f,text, null);
+			vg.Text(x+h*0.3f,y+h*0.5f,text);
 
 			vg.FontSize(h*1.3f);
 			vg.FontFace("icons");
 			vg.FillColor(NVG.RGBA(255,255,255,64));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_CENTER | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+w-h*0.5f, y+h*0.5f, cpToUTF8(ICON_CHEVRON_RIGHT), null);
+			vg.Text(x+w-h*0.5f, y+h*0.5f, cpToUTF8(ICON_CHEVRON_RIGHT));
 		}
 
 		public static void drawLabel(NVGcontext vg, string text, float x, float y, float w, float h)
@@ -177,7 +177,7 @@ namespace NanoVG.Test
 			vg.FillColor(NVG.RGBA(255,255,255,128));
 
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x,y+h*0.5f,text, null);
+			vg.Text(x,y+h*0.5f,text);
 		}
 
 		public static void drawEditBoxBase(NVGcontext vg, float x, float y, float w, float h)
@@ -205,7 +205,7 @@ namespace NanoVG.Test
 			vg.FontFace("sans");
 			vg.FillColor(NVG.RGBA(255,255,255,64));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+h*0.3f,y+h*0.5f,text, null);
+			vg.Text(x+h*0.3f,y+h*0.5f,text);
 		}
 
 		public static void drawEditBoxNum(NVGcontext vg,
@@ -215,19 +215,19 @@ namespace NanoVG.Test
 
 			drawEditBoxBase(vg, x,y, w,h);
 
-			uw = vg.TextBounds(0,0, units, null, null);
+			uw = vg.TextBounds(0,0, units, out _);
 
 			vg.FontSize(15.0f);
 			vg.FontFace("sans");
 			vg.FillColor(NVG.RGBA(255,255,255,64));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_RIGHT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+w-h*0.3f,y+h*0.5f,units, null);
+			vg.Text(x+w-h*0.3f,y+h*0.5f,units);
 
 			vg.FontSize(17.0f);
 			vg.FontFace("sans");
 			vg.FillColor(NVG.RGBA(255,255,255,128));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_RIGHT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+w-uw-h*0.5f,y+h*0.5f,text, null);
+			vg.Text(x+w-uw-h*0.5f,y+h*0.5f,text);
 		}
 
 		public static void drawCheckBox(NVGcontext vg, string text, float x, float y, float w, float h)
@@ -239,7 +239,7 @@ namespace NanoVG.Test
 			vg.FillColor(NVG.RGBA(255,255,255,160));
 
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+28,y+h*0.5f,text, null);
+			vg.Text(x+28,y+h*0.5f,text);
 
 			bg = vg.BoxGradient(x+1,y+(int)(h*0.5f)-9+1, 18,18, 3,3, NVG.RGBA(0,0,0,32), NVG.RGBA(0,0,0,92));
 			vg.BeginPath();
@@ -251,7 +251,7 @@ namespace NanoVG.Test
 			vg.FontFace("icons");
 			vg.FillColor(NVG.RGBA(255,255,255,128));
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_CENTER | NVGalign.NVG_ALIGN_MIDDLE));
-			vg.Text(x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK), null);
+			vg.Text(x+9+2, y+h*0.5f, cpToUTF8(ICON_CHECK));
 		}
 
 		public static void drawButton(NVGcontext vg, int preicon, string text, float x, float y, float w, float h, NVGcolor col)
@@ -277,11 +277,11 @@ namespace NanoVG.Test
 
 			vg.FontSize(17.0f);
 			vg.FontFace("sans-bold");
-			tw = vg.TextBounds(0,0, text, null, null);
+			tw = vg.TextBounds(0,0, text, out _);
 			if (preicon != 0) {
 				vg.FontSize(h*1.3f);
 				vg.FontFace("icons");
-				iw = vg.TextBounds(0,0, cpToUTF8(preicon), null, null);
+				iw = vg.TextBounds(0,0, cpToUTF8(preicon), out _);
 				iw += h*0.15f;
 			}
 
@@ -290,16 +290,16 @@ namespace NanoVG.Test
 				vg.FontFace("icons");
 				vg.FillColor(NVG.RGBA(255,255,255,96));
 				vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
-				vg.Text(x+w*0.5f-tw*0.5f-iw*0.75f, y+h*0.5f, cpToUTF8(preicon), null);
+				vg.Text(x+w*0.5f-tw*0.5f-iw*0.75f, y+h*0.5f, cpToUTF8(preicon));
 			}
 
 			vg.FontSize(17.0f);
 			vg.FontFace("sans-bold");
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_MIDDLE));
 			vg.FillColor(NVG.RGBA(0,0,0,160));
-			vg.Text(x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f-1,text, null);
+			vg.Text(x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f-1,text);
 			vg.FillColor(NVG.RGBA(255,255,255,160));
-			vg.Text(x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f,text, null);
+			vg.Text(x+w*0.5f-tw*0.5f+iw*0.25f,y+h*0.5f,text);
 		}
 
 		public static void drawSlider(NVGcontext vg, float pos, float x, float y, float w, float h)
@@ -846,18 +846,18 @@ namespace NanoVG.Test
 
 		public static void drawParagraph(NVGcontext vg, float x, float y, float width, float height, float mx, float my)
 		{
-			/*NVGtextRow[] rows = new NVGtextRow[3];
-			NVGglyphPosition[] glyphs = new NVGglyphPosition[100];
+			TextRow[] rows;
+			NVGglyphPosition[] glyphs;
 			string text = "This is longer chunk of text.\n  \n  Would have used lorem ipsum but she    was busy jumping over the lazy dog with the fox and all the men who came to the aid of the party.🎉";
-			string start;
-			string end;
-			int nrows, i, nglyphs, j, lnum = 0;
+			/*string start;
+			string end;*/
+			int i, j, lnum = 0;
 			float lineh;
 			float caretx, px;
-			float[] bounds = new float[4];
+			float[] bounds;
 			float a;
 			string hoverText = "Hover your mouse over the text to see calculated caret position.";
-			float gx,gy;
+			float gx = 0f, gy = 0f;
 			int gutter = 0;
 			string boxText = "Testing\nsome multiline\ntext.";
 
@@ -866,37 +866,40 @@ namespace NanoVG.Test
 			vg.FontSize(15.0f);
 			vg.FontFace("sans");
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_TOP));
-			vg.TextMetrics(null, null, ref lineh);
+			vg.TextMetrics(out _, out _, out lineh);
 
 			// The text break API can be used to fill a large buffer of rows,
 			// or to iterate over the text just few lines (or just one) at a time.
 			// The "next" variable of the last returned item tells where to continue.
-			start = text;
-			end = text + strlen(text);
-			while ((nrows = vg.TextBreakLines(start, end, width, rows, 3))) {
-				for (i = 0; i < nrows; i++) {
-					NVGtextRow* row = &rows[i];
-					int hit = mx > x && mx < (x+width) && my >= y && my < (y+lineh);
+			/*start = text;
+			end = text + strlen(text);*/
+
+			rows = vg.TextBreakLines(text, width, 3);
+
+			while (rows.Length > 0) {
+				for (i = 0; i < rows.Length; i++) {
+					TextRow row = rows[i];
+					bool hit = mx > x && mx < (x+width) && my >= y && my < (y+lineh);
 
 					vg.BeginPath();
-					vg.FillColor(NVG.RGBA(255,255,255,hit?64:16));
-					vg.Rect(x + row->minx, y, row->maxx - row->minx, lineh);
+					vg.FillColor(NVG.RGBA(255,255,255, hit ? (byte)64 : (byte)16));
+					vg.Rect(x + row.MinX, y, row.MaxX - row.MinX, lineh);
 					vg.Fill();
 
 					vg.FillColor(NVG.RGBA(255,255,255,255));
-					vg.Text(x, y, row->start, row->end);
+					vg.Text(x, y, row.Text);
 
 					if (hit) {
-						caretx = (mx < x+row->width/2) ? x : x+row->width;
+						caretx = (mx < x+row.Width /2) ? x : x+row.Width;
 						px = x;
-						nglyphs = vg.TextGlyphPositions(x, y, row->start, row->end, glyphs, 100);
-						for (j = 0; j < nglyphs; j++) {
+						glyphs = vg.TextGlyphPositions(x, y, row.Text, 100);
+						for (j = 0; j < glyphs.Length; j++) {
 							float x0 = glyphs[j].x;
-							float x1 = (j+1 < nglyphs) ? glyphs[j+1].x : x+row->width;
-							float gx = x0 * 0.3f + x1 * 0.7f;
-							if (mx >= px && mx < gx)
+							float x1 = (j+1 < glyphs.Length) ? glyphs[j+1].x : x+row.Width;
+							float cx = x0 * 0.3f + x1 * 0.7f;
+							if (mx >= px && mx < cx)
 								caretx = glyphs[j].x;
-							px = gx;
+							px = cx;
 						}
 						vg.BeginPath();
 						vg.FillColor(NVG.RGBA(255,192,0,255));
@@ -911,7 +914,9 @@ namespace NanoVG.Test
 					y += lineh;
 				}
 				// Keep going...
-				start = rows[nrows-1].next;
+				TextRow lastRow = rows[rows.Length-1];
+				string next = lastRow.SourceText.Substring(lastRow.NextLinePosition);
+				rows = vg.TextBreakLines(next, width, 3);
 			}
 
 			if (gutter != 0) {
@@ -919,7 +924,7 @@ namespace NanoVG.Test
 				vg.FontSize(12.0f);
 				vg.TextAlign((int)(NVGalign.NVG_ALIGN_RIGHT | NVGalign.NVG_ALIGN_MIDDLE));
 
-				vg.TextBounds(gx,gy, txt, null, bounds);
+				vg.TextBounds(gx,gy, txt, out bounds);
 
 				vg.BeginPath();
 				vg.FillColor(NVG.RGBA(255,192,0,255));
@@ -927,7 +932,7 @@ namespace NanoVG.Test
 				vg.Fill();
 
 				vg.FillColor(NVG.RGBA(32,32,32,255));
-				vg.Text(gx,gy, txt, null);
+				vg.Text(gx,gy, txt);
 			}
 
 			y += 20.0f;
@@ -936,7 +941,7 @@ namespace NanoVG.Test
 			vg.TextAlign((int)(NVGalign.NVG_ALIGN_LEFT | NVGalign.NVG_ALIGN_TOP));
 			vg.TextLineHeight(1.2f);
 
-			vg.TextBoxBounds(x,y, 150, hoverText, null, bounds);
+			vg.TextBoxBounds(x,y, 150, hoverText, out bounds);
 
 			// Fade the tooltip out when close to it.
 			gx = clampf(mx, bounds[0], bounds[2]) - mx;
@@ -955,9 +960,9 @@ namespace NanoVG.Test
 			vg.Fill();
 
 			vg.FillColor(NVG.RGBA(0,0,0,220));
-			vg.TextBox(x,y, 150, hoverText, null);
+			vg.TextBox(x,y, 150, hoverText);
 
-			vg.Restore();*/
+			vg.Restore();
 		}
 
 		public static void drawWidths(NVGcontext vg, float x, float y, float width)
