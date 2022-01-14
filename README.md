@@ -1,4 +1,4 @@
-# NanoVG.NET
+# NanoVG.NETCore
 .NET Core bindings for [NanoVG](https://github.com/memononen/nanovg).
 
 Inspired by [Saša Barišić's NanoVG port](https://github.com/sbarisic/nanovg_dotnet) for .NET Framework. Remade from scratch to build a more automated workflow, making it easier to stay up-to-date with NanoVG.
