@@ -17,6 +17,7 @@ namespace NanoVG.Test
         NVGcontext vg;
         DemoData demoData;
 
+        float pixelRatio;
         bool blowup = false;
 
         protected override void OnLoad()
@@ -53,6 +54,12 @@ namespace NanoVG.Test
         {
             base.OnResize(e);
             GL.Viewport(0, 0, e.Width, e.Height);
+
+            if(e.Width >= e.Height)
+                pixelRatio = ClientSize.X / ClientSize.Y;
+            else
+                pixelRatio = ClientSize.Y / ClientSize.X;
+
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -61,8 +68,6 @@ namespace NanoVG.Test
 
             if(WindowState == WindowState.Minimized)
                 return;
-
-            float pixelRatio = ClientSize.X / ClientSize.Y;
 
             GL.ClearColor(0.3f, 0.3f, 0.3f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
