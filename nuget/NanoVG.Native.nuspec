@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>NanoVG.Native</id>
+    <title>NanoVG.Native</title>
+    <version>1.0.0</version>
+    <authors>Visual Vincent</authors>
+    <owners>Visual Vincent</owners>
+    <license type="expression">Zlib</license>
+    <projectUrl>https://github.com/Visual-Vincent/NanoVG.NETCore</projectUrl>
+    <repository type="git" url="https://github.com/Visual-Vincent/NanoVG.NETCore"/>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Native NanoVG libraries.</summary>
+    <description>Native NanoVG libraries for NanoVG.NETCore (but can be used by any project).</description>
+    <language>en-US</language>
+    <tags>nanovg vector-graphics svg opengl opengl3 netcoreapp3.1 net5.0 net6.0</tags>
+    <copyright>Copyright © Mikko Mononen, Visual Vincent. zlib License.</copyright>
+    <dependencies></dependencies>
+  </metadata>
+  <files>
+    <file src="../nanovg/LICENSE.txt"/>
+    <file src="../NanoVG.Native/Win32/Release/NanoVG.dll" target="runtimes\win-x86\native\NanoVG.dll"/>
+    <file src="../NanoVG.Native/Win32/Release/NanoVG.pdb" target="runtimes\win-x86\native\NanoVG.pdb"/>
+    <file src="../NanoVG.Native/x64/Release/NanoVG.dll" target="runtimes\win-x64\native\NanoVG.dll"/>
+    <file src="../NanoVG.Native/x64/Release/NanoVG.pdb" target="runtimes\win-x64\native\NanoVG.pdb"/>
+  </files>
+</package>

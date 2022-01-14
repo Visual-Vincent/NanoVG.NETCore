@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata minClientVersion="2.12">
+    <id>NanoVG.NETCore</id>
+    <title>NanoVG.NETCore</title>
+    <version>1.0.0</version>
+    <authors>Visual Vincent</authors>
+    <owners>Visual Vincent</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Visual-Vincent/NanoVG.NETCore</projectUrl>
+    <repository type="git" url="https://github.com/Visual-Vincent/NanoVG.NETCore"/>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>Provides .NET Core bindings for the vector graphics rendering library NanoVG.</summary>
+    <description>NanoVG.NETCore provides .NET Core bindings (via P/Invoke) for the OpenGL-based vector graphics rendering library NanoVG.
+
+System requirements:
+- .NET Core 3.1 or newer
+
+Windows-specific requirements:
+- Windows 7 SP1 or newer
+- Microsoft Visual C++ 2019 Redistributable (x86, x64 or both, depending on which platform(s) you target)</description>
+    <language>en-US</language>
+    <tags>nanovg vector-graphics svg opengl opengl3 netcoreapp3.1 net5.0 net6.0</tags>
+    <copyright>Copyright © Visual Vincent. MIT License.</copyright>
+    <dependencies>
+      <group targetFramework="netcoreapp3.1">
+        <dependency id="NanoVG.Native" version="1.0.0"/>
+      </group>
+      <group targetFramework="net5.0">
+        <dependency id="NanoVG.Native" version="1.0.0"/>
+      </group>
+      <group targetFramework="net6.0">
+        <dependency id="NanoVG.Native" version="1.0.0"/>
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="../LICENSE"/>
+    <file src="../NanoVG.NET/bin/Release/netcoreapp3.1/NanoVG.NET.dll" target="lib\netcoreapp3.1\NanoVG.NET.dll"/>
+    <file src="../NanoVG.NET/bin/Release/netcoreapp3.1/NanoVG.NET.pdb" target="lib\netcoreapp3.1\NanoVG.NET.pdb"/>
+    <file src="../NanoVG.NET/bin/Release/netcoreapp3.1/NanoVG.NET.xml" target="lib\netcoreapp3.1\NanoVG.NET.xml"/>
+    <file src="../NanoVG.NET/bin/Release/net5.0/NanoVG.NET.dll" target="lib\net5.0\NanoVG.NET.dll"/>
+    <file src="../NanoVG.NET/bin/Release/net5.0/NanoVG.NET.pdb" target="lib\net5.0\NanoVG.NET.pdb"/>
+    <file src="../NanoVG.NET/bin/Release/net5.0/NanoVG.NET.xml" target="lib\net5.0\NanoVG.NET.xml"/>
+    <file src="../NanoVG.NET/bin/Release/net6.0/NanoVG.NET.dll" target="lib\net6.0\NanoVG.NET.dll"/>
+    <file src="../NanoVG.NET/bin/Release/net6.0/NanoVG.NET.pdb" target="lib\net6.0\NanoVG.NET.pdb"/>
+    <file src="../NanoVG.NET/bin/Release/net6.0/NanoVG.NET.xml" target="lib\net6.0\NanoVG.NET.xml"/>
+  </files>
+</package>
